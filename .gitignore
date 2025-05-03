@@ -28,3 +28,6 @@ replay_pid*
 
 .idea/
 .gradle/
+
+data-lake/
+support.core/src/main/resources/data/

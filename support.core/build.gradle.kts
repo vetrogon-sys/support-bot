@@ -25,6 +25,11 @@ repositories {
 }
 
 dependencies {
+	implementation("com.vladsch.flexmark:flexmark-all:0.64.8")
+	implementation("org.jsoup:jsoup:1.20.1")
+	implementation("com.google.guava:guava:33.4.8-jre")
+	implementation("org.apache.commons:commons-lang3:3.17.0")
+
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
