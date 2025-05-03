@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: demo
+
+crawler:
+  inputFile: "./data/links.txt"
+  outputDir: "./data-lake"
