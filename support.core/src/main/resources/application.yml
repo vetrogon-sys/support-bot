@@ -5,3 +5,14 @@ spring:
 crawler:
   inputFile: "./data/links.txt"
   outputDir: "./data-lake"
+
+chunk:
+  hash:
+    algo: "SHA-256"
+
+vectorizer:
+  embeddingModel: "mxbai-embed-large"
+  collectionName: "support-chunks"
+  ollamaBaseUrl: "http://127.0.0.1:11434"
+  qdrantUrl: "http://127.0.0.1:6333"
+  vectorSize: 384
