@@ -1,6 +1,14 @@
 spring:
   application:
     name: demo
+  ai:
+    ollama:
+      enabled: true
+      model: llama3
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: llama3
 
 crawler:
   inputFile: "./data/links.txt"
