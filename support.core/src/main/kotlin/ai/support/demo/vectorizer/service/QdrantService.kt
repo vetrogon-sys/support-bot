@@ -13,16 +13,23 @@ import java.util.*
 class QdrantService(
     private val qdrantRepository: QdrantRepository
 ) {
-    fun save(chunks: Collection<Chunk>) {
+    fun save(chunk: Chunk) {
+        saveAll(listOf(chunk))
+    }
+
+    fun saveAll(chunks: Collection<Chunk>) {
+        if (chunks.isEmpty()) {
+            return
+        }
         val points = chunks.stream()
             .map { chunk ->
                 Point(
-                    UUID.nameUUIDFromBytes(chunk.hash.toByteArray()).toString(),
+                    UUID.nameUUIDFromBytes(chunk.hash.hash.toByteArray()).toString(),
                     chunk.embedding,
                     Payload(
                         chunk.text,
                         chunk.filename,
-                        chunk.hash
+                        chunk.hash.hash
                     )
                 )
             }.toList()

@@ -9,6 +9,9 @@ spring:
       chat:
         options:
           model: llama3
+  redis:
+    host: localhost
+    port: 6379
 
 crawler:
   inputFile: "./data/links.txt"
