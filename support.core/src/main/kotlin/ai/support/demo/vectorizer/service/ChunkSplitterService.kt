@@ -1,5 +1,6 @@
 package ai.support.demo.vectorizer.service
 
+import ai.support.demo.service.EmbeddingService
 import ai.support.demo.vectorizer.model.Chunk
 import ai.support.demo.vectorizer.repository.ChunkHashRepository
 import kotlinx.coroutines.coroutineScope
@@ -20,14 +21,13 @@ class ChunkSplitterService(
             .distinct()
             .stream()
             .flatMap { text -> splitTextIntoChunks(text).stream() }
-            .flatMap { text -> text.split("\n").stream() }
-            .parallel()
             .filter { text -> isValidSentence(text) }
+            .parallel()
             .map { part ->
                 val contentHash = hashService.hashString(part)
                 if (chunkHashRepository.contains(contentHash)) return@map null
 
-                val embedding = embeddingService.embed(part)
+                val embedding = embeddingService.embed(part.split("\n").toList())
                 Chunk(part, contentHash, filename, embedding)
             }
             .toList();
