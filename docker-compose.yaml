@@ -11,7 +11,7 @@ services:
             - driver: nvidia
               capabilities: [ "gpu" ]
     ports:
-      - "11434:11434"
+      - "${OLLAMA_PORT}:11434"
     volumes:
       - ollama_data:/root/.ollama
     environment:
@@ -30,7 +30,7 @@ services:
     image: qdrant/qdrant
     container_name: qdrant
     ports:
-      - "6333:6333"
+      - "${QDRANT_PORT}:6333"
     volumes:
       - qdrant_data:/qdrant/storage
     restart: unless-stopped
@@ -38,12 +38,27 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:6379"
     volumes:
       - redis_data:/redis/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
 volumes:
   ollama_data:
   qdrant_data:
   redis_data:
+  postgres_data:
