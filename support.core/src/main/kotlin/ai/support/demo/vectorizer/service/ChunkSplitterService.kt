@@ -14,10 +14,10 @@ class ChunkSplitterService(
 ) {
 
     suspend fun buildChunks(filename: String, content: String): List<Chunk> = coroutineScope {
-        val deferredChunks = content
+        return@coroutineScope content
             .split(Regex("\n{2,}"))
-            .map { it.trim() }
-            .filter { it.length > 20 }
+            .map { it.trimIndent() }
+            .filter { it.length > 10 }
             .distinct()
             .stream()
             .flatMap { text -> splitTextIntoChunks(text).stream() }
@@ -30,9 +30,8 @@ class ChunkSplitterService(
                 val embedding = embeddingService.embed(part.split("\n").toList())
                 Chunk(part, contentHash, filename, embedding)
             }
-            .toList();
-
-        deferredChunks.mapNotNull { it }
+            .toList()
+            .mapNotNull { it }
     }
 
     fun splitTextIntoChunks(text: String, maxChunkSize: Int = 500): List<String> {
