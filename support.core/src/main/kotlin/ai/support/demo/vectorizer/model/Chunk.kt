@@ -1,6 +1,6 @@
 package ai.support.demo.vectorizer.model
 
-data class Chunk(val text: String, val hash: String, val filename: String, val embedding: FloatArray) {
+data class Chunk(val text: String, val hash: ChunkHash, val filename: String, val embedding: FloatArray) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

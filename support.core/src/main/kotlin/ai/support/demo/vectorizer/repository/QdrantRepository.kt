@@ -32,7 +32,7 @@ class QdrantRepository(
 
     @PostConstruct
     fun initQdrant() {
-        val url = getQdrantUrl()
+        val url = getQdrantCollectionUrl()
 
         CompletableFuture.supplyAsync {
             return@supplyAsync rest
@@ -63,10 +63,10 @@ class QdrantRepository(
     }
 
     fun saveAll(points: List<Point>) {
-        val body = mapOf("points" to requestMapper.writeValueAsString(points));
+        val body = requestMapper.writeValueAsString(PointsList(points));
 
         try {
-            val url = "${getQdrantUrl()}/points"
+            val url = "${getQdrantCollectionUrl()}/points"
             log.info("PUT [${url}] to save ${points.size} points")
             val response = rest.exchange(
                 url,
@@ -75,8 +75,12 @@ class QdrantRepository(
                 String::class.java
             )
 
-            log.info("Save ${points.size} to Qdrant: ${response.statusCode}")
-            log.debug("Qdrant response: ${response.body}")
+            log.debug(
+                "Save {} to Qdrant: {}, response {}",
+                points.size,
+                response.statusCode,
+                response.body
+            )
         } catch (e: Exception) {
             log.warn(e.message, e)
         }
@@ -86,7 +90,7 @@ class QdrantRepository(
         val body = requestMapper.writeValueAsString(searchRequest);
 
         try {
-            val url = "${getQdrantUrl()}/points/search"
+            val url = "${getQdrantCollectionUrl()}/points/search"
             log.info("POST [${url}] to search Qdrant vector")
             val searchResponse = rest.postForEntity(
                 url,
@@ -110,8 +114,10 @@ class QdrantRepository(
         }
     }
 
-    private fun getQdrantUrl(): String = "${qdrantUrl}/collections/${collectionName}"
+    private fun getQdrantCollectionUrl(): String = "${qdrantUrl}/collections/${collectionName}"
 }
+
+data class PointsList(val points: List<Point>) {}
 
 data class Point(
     val id: String,

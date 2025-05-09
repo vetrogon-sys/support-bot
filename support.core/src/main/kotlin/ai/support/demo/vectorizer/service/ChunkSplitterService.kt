@@ -1,38 +1,9 @@
 package ai.support.demo.vectorizer.service
 
-import ai.support.demo.service.EmbeddingService
-import ai.support.demo.vectorizer.model.Chunk
-import ai.support.demo.vectorizer.repository.ChunkHashRepository
-import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service
 
 @Service
-class ChunkSplitterService(
-    private val chunkHashRepository: ChunkHashRepository,
-    private val hashService: HashService,
-    private val embeddingService: EmbeddingService
-) {
-
-    suspend fun buildChunks(filename: String, content: String): List<Chunk> = coroutineScope {
-        return@coroutineScope content
-            .split(Regex("\n{2,}"))
-            .map { it.trimIndent() }
-            .filter { it.length > 10 }
-            .distinct()
-            .stream()
-            .flatMap { text -> splitTextIntoChunks(text).stream() }
-            .filter { text -> isValidSentence(text) }
-            .parallel()
-            .map { part ->
-                val contentHash = hashService.hashString(part)
-                if (chunkHashRepository.contains(contentHash)) return@map null
-
-                val embedding = embeddingService.embed(part.split("\n").toList())
-                Chunk(part, contentHash, filename, embedding)
-            }
-            .toList()
-            .mapNotNull { it }
-    }
+class ChunkSplitterService {
 
     fun splitTextIntoChunks(text: String, maxChunkSize: Int = 500): List<String> {
         val chunks = mutableListOf<String>()

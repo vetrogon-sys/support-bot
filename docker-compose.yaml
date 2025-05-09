@@ -35,6 +35,15 @@ services:
       - qdrant_data:/qdrant/storage
     restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/redis/data
+    restart: unless-stopped
+
 volumes:
   ollama_data:
   qdrant_data:
+  redis_data:

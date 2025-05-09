@@ -45,6 +45,9 @@ dependencies {
 //	implementation("org.springframework.ai:spring-ai-starter-model-ollama")
 	implementation("org.springframework.ai:spring-ai-ollama")
 
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	compileOnly("org.projectlombok:lombok")
