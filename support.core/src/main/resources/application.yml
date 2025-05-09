@@ -24,9 +24,8 @@ ollama:
     chat: "llama3.2:1b"
     embedding: "mxbai-embed-large"
 
-vectorizer:
-  embeddingModel: "mxbai-embed-large"
-  collectionName: "support-chunks"
-  ollamaBaseUrl: "http://127.0.0.1:11434"
-  qdrantUrl: "http://127.0.0.1:6333"
-  vectorSize: 384
+qdrant:
+  url: http://127.0.0.1:6333
+  collection:
+    name: "support-chunks"
+    vectorSize: 1024
