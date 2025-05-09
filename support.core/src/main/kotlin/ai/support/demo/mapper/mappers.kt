@@ -1,6 +1,7 @@
 package ai.support.demo.mapper
 
 import ai.support.demo.dto.ChatDto
+import ai.support.demo.dto.ChatIdDto
 import ai.support.demo.dto.MessageDto
 import ai.support.demo.entity.Chat
 import ai.support.demo.entity.ChatMessage
@@ -18,6 +19,7 @@ class MessageMapperService {
             id = message.id,
             message = message.message,
             time = message.time,
+            messageType = message.messageType.name,
             chatId = message.chat.id.toString()
         )
     }
@@ -34,6 +36,10 @@ class MessageMapperService {
 class ChatMapperService(
     private val messageMapperService: MessageMapperService
 ) {
+    fun toIdDto(chat: Chat) : ChatIdDto {
+        return ChatIdDto(chat.id);
+    }
+
     fun toDto(chat: Chat): ChatDto {
         return ChatDto(
             id = chat.id,
