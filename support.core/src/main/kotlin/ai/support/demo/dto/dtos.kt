@@ -5,14 +5,13 @@ import java.util.*
 
 data class ChatDto(
     val id: UUID,
-    val messages: List<MessageDto>?
+    val messages: Set<MessageDto>?
 )
 
 data class MessageDto(
     var id: UUID,
-    var message: String,
+    var message: String?,
     var time: Long,
-    var sender: String,
     @get:JsonProperty("chat_id")
     var chatId: String
 )
