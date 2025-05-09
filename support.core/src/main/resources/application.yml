@@ -1,17 +1,24 @@
 spring:
   application:
     name: demo
-  ai:
-    ollama:
-      enabled: true
-      model: llama3
-      base-url: http://localhost:11434
-      chat:
-        options:
-          model: llama3
+
   redis:
     host: localhost
-    port: 6379
+    port: ${REDIS_PORT:6379}
+
+  datasource:
+    url: jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+  profiles:
+    active: ${APP_PROFILE:dev}
 
 crawler:
   inputFile: "./data/links.txt"
@@ -22,13 +29,13 @@ chunk:
     algo: "SHA-256"
 
 ollama:
-  url: http://127.0.0.1:11434
+  url: http://127.0.0.1:${OLLAMA_PORT:11434}
   model:
     chat: "llama3.2:1b"
     embedding: "mxbai-embed-large"
 
 qdrant:
-  url: http://127.0.0.1:6333
+  url: http://127.0.0.1:${QDRANT_PORT:6333}
   collection:
     name: "support-chunks"
     vectorSize: 1024
