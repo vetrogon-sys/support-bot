@@ -18,6 +18,12 @@ chunk:
   hash:
     algo: "SHA-256"
 
+ollama:
+  url: http://127.0.0.1:11434
+  model:
+    chat: "llama3.2:1b"
+    embedding: "mxbai-embed-large"
+
 vectorizer:
   embeddingModel: "mxbai-embed-large"
   collectionName: "support-chunks"
