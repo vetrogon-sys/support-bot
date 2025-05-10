@@ -101,6 +101,30 @@ class MessageProcessorService(private val webClient: WebClient) {
         }
     }
 
+    suspend fun deleteChat(chatId: String) : String {
+        logger.info("Remove chat ID: $chatId")
+
+        return try {
+            withContext(Dispatchers.IO) {
+                val ticketId = chatTicketMap[chatId]
+
+                if (ticketId == null) {
+                    return@withContext "You don't have an active support ticket to delete. Please send a message first."
+                }
+
+                // For escalation, we'll send a special message to the chat
+                webClient.delete()
+                    .uri("/api/chats/$ticketId")
+                    .retrieve()
+
+                "You're chat was success removed"
+            }
+        } catch (e: Exception) {
+            logger.error("Error escalating ticket", e)
+            "We encountered a problem while trying to delete you're chat. Please try again later."
+        }
+    }
+
     private fun formatChatStatus(chatId: String, chatResponse: ChatResponse): String {
         val messages = chatResponse.messages
         val messageCount = messages.size
