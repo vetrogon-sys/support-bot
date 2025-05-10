@@ -22,7 +22,7 @@ services:
         ollama serve &
         sleep 5 &&
         ollama pull mxbai-embed-large &&
-        ollama pull llama3.2:1b &&
+        ollama pull qwen2:7b &&
         wait
       "
 

@@ -31,7 +31,7 @@ chunk:
 ollama:
   url: http://127.0.0.1:${OLLAMA_PORT:11434}
   model:
-    chat: "llama3.2:1b"
+    chat: "qwen2:7b"
     embedding: "mxbai-embed-large"
 
 qdrant:
