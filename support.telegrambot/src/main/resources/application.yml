@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ai-support
+
+server:
+  port: ${TELEGRAM_BOT_PORT}
+
+telegram:
+  bot:
+    username: ${TELEGRAM_BOT_USERNAME}
+    token: ${TELEGRAM_BOT_TOKEN}
+
+backend:
+  api:
+    base-url: ${BACKEND_API_BASE_URL}
+
+logging:
+  level:
+    root: INFO
+    com.example.telegrambot: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
