@@ -57,6 +57,10 @@ class SupportBotService(
                             val text = message.text
 
                             when {
+                                text.startsWith("/start") -> {
+                                    sendResponse(chatId, getStartMessage())
+                                }
+
                                 text.startsWith(CommandRegistry.HELP) -> {
                                     sendResponse(chatId, getHelpMessage())
                                 }
@@ -78,6 +82,11 @@ class SupportBotService(
                                 text.startsWith(CommandRegistry.ESCALATE) -> {
                                     val escalateResponse = messageProcessor.escalateTicket(chatId)
                                     sendResponse(chatId, escalateResponse)
+                                }
+
+                                text.startsWith(CommandRegistry.REMOVE) -> {
+                                    val deleteResponse = messageProcessor.deleteChat(chatId)
+                                    sendResponse(chatId, deleteResponse)
                                 }
 
                                 text.startsWith("/") -> {
@@ -117,6 +126,23 @@ class SupportBotService(
         } catch (e: TelegramApiException) {
             logger.error("Error sending message to chat ID: $chatId", e)
         }
+    }
+
+    private fun getStartMessage(): String {
+        return """
+        👋 *Welcome to the Support Bot!*
+
+        I'm here to assist you with your inquiries and support needs.
+
+        *Here are some commands to get started:*
+        - `/help` - Get a list of available commands.
+        - `/status <ticket_id>` - Check the status of your support ticket.
+        - `/escalate` - Escalate your ticket to higher-level support.
+
+        _Simply type your message to create a new support ticket, and our team will get back to you as soon as possible._
+
+        🔧 *How can I assist you today?*
+    """.trimIndent()
     }
 
     private fun getHelpMessage(): String {
