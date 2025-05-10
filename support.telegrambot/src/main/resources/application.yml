@@ -5,10 +5,9 @@ spring:
 server:
   port: ${TELEGRAM_BOT_PORT}
 
-telegram:
-  bot:
-    username: ${TELEGRAM_BOT_USERNAME}
-    token: ${TELEGRAM_BOT_TOKEN}
+bot:
+  username: ${TELEGRAM_BOT_USERNAME}
+  token: ${TELEGRAM_BOT_TOKEN}
 
 backend:
   api:

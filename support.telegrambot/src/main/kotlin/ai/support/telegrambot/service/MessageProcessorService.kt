@@ -25,7 +25,7 @@ class MessageProcessorService(private val webClient: WebClient) {
                 // If this is a new chat, create one first
                 if (!chatTicketMap.containsKey(chatId)) {
                     val chatResponse = webClient.post()
-                        .uri("/api/support/chats")
+                        .uri("/api/chats")
                         .bodyValue(mapOf<String, String>())
                         .retrieve()
                         .awaitBody<ChatCreationResponse>()
@@ -38,7 +38,7 @@ class MessageProcessorService(private val webClient: WebClient) {
 
                 // Send the message to the chat
                 val response = webClient.post()
-                    .uri("/api/support/chats/$ticketId/messages")
+                    .uri("/api/chats/$ticketId/messages")
                     .bodyValue(mapOf("message" to text))
                     .retrieve()
                     .awaitBody<ChatResponse>()
@@ -62,7 +62,7 @@ class MessageProcessorService(private val webClient: WebClient) {
         return try {
             withContext(Dispatchers.IO) {
                 val response = webClient.get()
-                    .uri("/api/support/chats/$ticketId")
+                    .uri("/api/chats/$ticketId")
                     .retrieve()
                     .awaitBody<ChatResponse>()
 
@@ -88,7 +88,7 @@ class MessageProcessorService(private val webClient: WebClient) {
 
                 // For escalation, we'll send a special message to the chat
                 webClient.post()
-                    .uri("/api/support/chats/$ticketId/messages")
+                    .uri("/api/chats/$ticketId/messages")
                     .bodyValue(mapOf("message" to "[ESCALATE] This ticket requires urgent attention."))
                     .retrieve()
                     .awaitBody<ChatResponse>()

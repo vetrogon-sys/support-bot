@@ -1,15 +1,18 @@
 package ai.support.telegrambot.model
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class MessageResponse(val message: String)
 
 data class ChatCreationResponse(val id: String)
 
-data class ChatMessage(
+data class ChatMessage @JsonCreator constructor(
     val id: String,
     val message: String,
     val time: Long,
-    val messageType: String,
-    val chatId: String
+    @get:JsonProperty("message_type") val messageType: String,
+    @get:JsonProperty("chat_id") val chatId: String
 )
 
 data class ChatResponse(
