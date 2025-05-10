@@ -12,7 +12,7 @@ data class BackendConfig(
 )
 
 @Configuration
-@ConfigurationProperties(prefix = "telegram.bot")
+@ConfigurationProperties(prefix = "bot")
 data class BotConfig(
     var username: String = "",
     var token: String = ""
