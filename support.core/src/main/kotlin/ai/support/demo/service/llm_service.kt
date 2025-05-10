@@ -38,7 +38,10 @@ class SupportBotModelService(
     private fun initialize() {
         this.chatClient = ChatClient.builder(chatModel)
             .defaultSystem(
-                "You are a helpful support assistant."
+                """You are a helpful support assistant. 
+                    Make answer on customer question language.
+                    Chat like a human being.
+                    """.trimMargin()
             )
             .defaultAdvisors(
                 MessageChatMemoryAdvisor(
