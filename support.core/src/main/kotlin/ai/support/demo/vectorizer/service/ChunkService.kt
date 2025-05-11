@@ -4,7 +4,8 @@ import ai.support.demo.service.EmbeddingService
 import ai.support.demo.vectorizer.model.Chunk
 import ai.support.demo.vectorizer.model.ChunkHash
 import ai.support.demo.vectorizer.repository.ChunkHashRepository
-import jakarta.annotation.PostConstruct
+import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.context.ApplicationListener
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,10 +16,9 @@ class ChunkService(
     private val qdrantService: QdrantService,
     private val hashService: HashService,
     private val embeddingService: EmbeddingService
-) {
+) : ApplicationListener<ApplicationReadyEvent> {
 
-    @PostConstruct
-    fun processFileChunks() {
+    override fun onApplicationEvent(event: ApplicationReadyEvent) {
         fileScannerService.readDataLake().entries
             .parallelStream()
             .forEach { dataEntry ->

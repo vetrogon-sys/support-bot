@@ -162,7 +162,7 @@ data class ResultItem(
 
 data class SearchRequest(
     val vector: FloatArray,
-    val top: Int = 5,
+    val top: Int = 15,
     @get:JsonProperty("with_payload") val withPayload: Boolean = true
 ) {
     override fun equals(other: Any?): Boolean {

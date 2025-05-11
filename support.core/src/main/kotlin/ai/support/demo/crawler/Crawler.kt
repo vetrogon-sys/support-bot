@@ -71,8 +71,8 @@ fun main() {
     )
 
     val outDir = crawler.getOrCreateOutDirectory("./data-lake")
-    crawler.handleData(
-        "https://example.com",
-        outDir
+    crawler.handleDataFromFile(
+        "./data/links.txt",
+        "./data-lake"
     );
 }
