@@ -21,8 +21,8 @@ services:
       /bin/sh -c "
         ollama serve &
         sleep 5 &&
-        ollama pull mxbai-embed-large &&
-        ollama pull qwen2:7b &&
+        ollama pull ${EMBEDDING_MODEL} &&
+        ollama pull ${CHAT_MODEL} &&
         wait
       "
 

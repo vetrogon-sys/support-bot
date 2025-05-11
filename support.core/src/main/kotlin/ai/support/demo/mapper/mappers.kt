@@ -11,6 +11,7 @@ import org.springframework.ai.chat.messages.AssistantMessage
 import org.springframework.ai.chat.messages.Message
 import org.springframework.ai.chat.messages.UserMessage
 import org.springframework.stereotype.Service
+import java.util.SortedSet
 
 @Service
 class MessageMapperService {
@@ -24,10 +25,10 @@ class MessageMapperService {
         )
     }
 
-    fun toDtoList(messages: MutableSet<ChatMessage>): Set<MessageDto> {
+    fun toDtoList(messages: MutableSet<ChatMessage>): SortedSet<MessageDto> {
         return messages
             .map { toDto(it) }
-            .toSet()
+            .toSortedSet()
     }
 
 }

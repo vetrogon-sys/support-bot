@@ -4,55 +4,86 @@ import ai.support.demo.dto.ChatDto
 import ai.support.demo.dto.ChatIdDto
 import ai.support.demo.service.ChatMessageService
 import ai.support.demo.service.ChatService
+import ai.support.demo.service.SupportChatMessageService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
-import java.util.UUID
+import java.util.*
 
 @RestController
-@RequestMapping("/api/chats")
+@RequestMapping("/chats")
 class ChatController(
     private val chatService: ChatService
 ) {
 
     @GetMapping
-    fun getAllChats() : ResponseEntity<List<ChatIdDto>> {
+    fun getAllChats(): ResponseEntity<List<ChatIdDto>> {
         return ResponseEntity.ok(chatService.getAllChats());
     }
 
     @PostMapping
-    fun createChat() : ResponseEntity<ChatDto> {
+    fun createChat(): ResponseEntity<ChatDto> {
         val chat = chatService.createEmptyChat()
         return ResponseEntity.created(URI.create("/${chat.id}"))
             .body(chat)
     }
 
     @GetMapping("/{chatId}")
-    fun getChatById(@PathVariable chatId: UUID) : ResponseEntity<ChatDto> {
+    fun getChatById(@PathVariable chatId: UUID): ResponseEntity<ChatDto> {
         return ResponseEntity.ok(chatService.getChatById(chatId))
     }
 
     @DeleteMapping("/{chatId}")
-    fun deleteById(@PathVariable chatId: UUID) : ResponseEntity<*> {
+    fun deleteById(@PathVariable chatId: UUID): ResponseEntity<*> {
         return ResponseEntity.ok(chatService.deleteChat(chatId))
     }
 }
 
 @RestController
-@RequestMapping("/api/chats/{chatId}/messages")
+@RequestMapping("/assistant/chats/{chatId}/messages")
+class SupportAssistantController(
+    private val chatMessageService: SupportChatMessageService
+) {
+
+    @PostMapping("/user")
+    fun handleUserMessage(
+        @PathVariable chatId: UUID,
+        @RequestBody chatMessage: ChatMessage
+    ): ResponseEntity<ChatDto> {
+
+        if (chatMessage.message.isEmpty()) {
+            return ResponseEntity.notFound().build()
+        }
+
+        return ResponseEntity.ok(chatMessageService.handleUserMessage(chatId, chatMessage.message))
+    }
+
+    @PostMapping("/support")
+    fun handleSupportAnswer(
+        @PathVariable chatId: UUID,
+        @RequestBody chatMessage: ChatMessage
+    ): ResponseEntity<ChatDto> {
+
+        if (chatMessage.message.isEmpty()) {
+            return ResponseEntity.notFound().build()
+        }
+
+        return ResponseEntity.ok(chatMessageService.handleSupportMessage(chatId, chatMessage.message))
+    }
+
+}
+
+@RestController
+@RequestMapping("/chats/{chatId}/messages")
 class ChatMessageController(
     private val chatMessageService: ChatMessageService
 ) {
 
     @PostMapping
-    fun handleMessage(@PathVariable chatId : UUID,
-                      @RequestBody chatMessage: ChatMessage): ResponseEntity<ChatDto> {
+    fun handleMessage(
+        @PathVariable chatId: UUID,
+        @RequestBody chatMessage: ChatMessage
+    ): ResponseEntity<ChatDto> {
 
         if (chatMessage.message.isEmpty()) {
             return ResponseEntity.notFound().build()

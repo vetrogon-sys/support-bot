@@ -20,6 +20,10 @@ spring:
   profiles:
     active: ${APP_PROFILE:dev}
 
+server:
+  servlet:
+    context-path: /api
+
 crawler:
   inputFile: "./data/links.txt"
   outputDir: "./data-lake"
@@ -31,11 +35,11 @@ chunk:
 ollama:
   url: http://127.0.0.1:${OLLAMA_PORT:11434}
   model:
-    chat: "qwen2:7b"
-    embedding: "mxbai-embed-large"
+    chat: ${CHAT_MODEL}
+    embedding: ${EMBEDDING_MODEL}
 
 qdrant:
   url: http://127.0.0.1:${QDRANT_PORT:6333}
   collection:
     name: "support-chunks"
-    vectorSize: 1024
+    vectorSize: 768
